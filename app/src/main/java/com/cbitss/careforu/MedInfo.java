@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
@@ -38,7 +41,7 @@ public class MedInfo extends AppCompatActivity implements Callback {
         super.onCreate(savedInstanceState);
 
         //Adding back button to actionBar
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 

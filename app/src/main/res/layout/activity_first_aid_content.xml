@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.cbitss.careforu.FirstAidContent">
     
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
@@ -41,7 +41,7 @@
             android:textStyle="bold"
             android:textColor="#ffffff" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 
 

@@ -8,14 +8,20 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -34,6 +40,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Objects;
 
 
 /**
@@ -113,8 +121,8 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        result);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    result);
 
         }
 
@@ -169,7 +177,7 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
         //location..............................................................................................
 
         SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMap);
-        googleMap = fragment.getMap();
+        fragment.getMapAsync(this);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
@@ -205,15 +213,26 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
     }
 */
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Resume","OnResume");
+        Log.d("Resume", "OnResume");
         //Now lets connect to the API
         mGoogleApiClient.connect();
 
         if (mGoogleApiClient.isConnected()) {
             Log.d("Resume:", "onCon");
+            if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this.getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (location == null) {
@@ -229,7 +248,7 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
             conlist();
         }
 
-        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -291,7 +310,7 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
 
         //Disconnect from API onPause()
         if (mGoogleApiClient.isConnected()) {
-            Log.d("Resume","Pause:)");
+            Log.d("Resume", "Pause:)");
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, new com.google.android.gms.location.LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -310,10 +329,21 @@ public class Nearbyhosp extends Fragment implements GoogleApiClient.ConnectionCa
         mListener = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onConnected(Bundle bundle) {
 
-        Log.d("Resume:","onConnected");
+        Log.d("Resume:", "onConnected");
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this.getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (location == null) {

@@ -6,12 +6,14 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
